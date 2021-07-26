@@ -1,5 +1,5 @@
 import 'package:crypto_app_basic/app_widgets/explorer.dart';
-import 'package:crypto_app_basic/app_widgets/dashboard.dart';
+import 'package:crypto_app_basic/app_widgets/signUp.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter/material.dart';
 
@@ -37,14 +37,14 @@ class SignInButton extends StatelessWidget {
           elevation: 100.0,
           onPressed: () {
             //action
-            signUp(context);
+            signIn(context);
           },
         ),
         width: 100,
         height: 50);
   }
 
-  void signUp(BuildContext context) {
+  void signIn(BuildContext context) {
     var alertDialog = AlertDialog(
       elevation: 50,
       title: Center(
@@ -54,7 +54,8 @@ class SignInButton extends StatelessWidget {
       )),
       content: Text(
         "Click here \nto go to Home Page",
-        style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold, fontSize: 18),
+        style: TextStyle(
+            color: Colors.green, fontWeight: FontWeight.bold, fontSize: 18),
         textAlign: TextAlign.center,
       ),
       actions: [
@@ -66,7 +67,10 @@ class SignInButton extends StatelessWidget {
               );
             },
             child: Text("Go to Home Page",
-                style: TextStyle(color: Colors.blue, fontSize: 20, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    color: Colors.blue,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center))
       ],
     );
@@ -84,43 +88,45 @@ class SignIn extends StatelessWidget {
     // TODO: implement build
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        body: Center(
-            child: Container(
-                alignment: Alignment.center,
-                color: Colors.black,
-                child: Column(children: <Widget>[
-                  SizedBox(height: 25),
-                  ImageAsset(),
-                  SizedBox(height: 15),
-                  RichText(
-                      text: TextSpan(
-                          text: 'MyCrypt',
-                          style: TextStyle(color: Colors.white, fontSize: 25),
-                          children: <TextSpan>[
-                        TextSpan(
-                          text: 'Wallet',
-                          style:
-                              TextStyle(color: Colors.blueAccent, fontSize: 18),
-                        ),
-                      ])),
-                  SizedBox(height: 20.0),
-                  EmailEntry(),
-                  SizedBox(height: 10.0),
-                  PasswordEntry(),
-                  ForgetPassword(),
-                  SignInButton(),
-                  SizedBox(height: 15),
-                  Text(
-                      "-------------------------- or -----------------------------",
-                      style: TextStyle(
-                          color: Colors.grey, fontWeight: FontWeight.w400)),
-                  SocialPages(),
-                  CreateAccount()
-                ]))));
+        body: SingleChildScrollView(
+            child: Center(
+                child: Container(
+                    alignment: Alignment.center,
+                    color: Colors.black,
+                    child: Column(children: <Widget>[
+                      SizedBox(height: 25),
+                      ImageAsset(),
+                      SizedBox(height: 15),
+                      RichText(
+                          text: TextSpan(
+                              text: 'MyCrypt',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 25),
+                              children: <TextSpan>[
+                            TextSpan(
+                              text: 'Wallet',
+                              style: TextStyle(
+                                  color: Colors.blueAccent, fontSize: 18),
+                            ),
+                          ])),
+                      SizedBox(height: 20.0),
+                      UsernameEntry(),
+                      SizedBox(height: 10.0),
+                      PasswordEntry(),
+                      ForgetPassword(),
+                      SignInButton(),
+                      SizedBox(height: 15),
+                      Text(
+                          "-------------------------- or -----------------------------",
+                          style: TextStyle(
+                              color: Colors.grey, fontWeight: FontWeight.w400)),
+                      SocialPages(),
+                      CreateAccount()
+                    ])))));
   }
 }
 
-class EmailEntry extends StatelessWidget {
+class UsernameEntry extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -128,7 +134,7 @@ class EmailEntry extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Email',
+          'Username',
           style: TextStyle(
             color: Colors.blueGrey,
             fontSize: 15,
@@ -141,19 +147,23 @@ class EmailEntry extends StatelessWidget {
           width: 310.0,
           decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
           child: TextField(
-            keyboardType: TextInputType.emailAddress,
-            style: TextStyle(
-              color: Colors.white,
-              fontFamily: 'RobotoCondensed',
-            ),
-            decoration: InputDecoration(
-                contentPadding: EdgeInsets.only(top: 14.0, bottom: 14.0),
-                prefixIcon: Icon(
-                  Icons.email,
-                  color: Colors.white,
-                ),
-                hintText: 'Enter your Email',
-                hintStyle: TextStyle(color: Colors.grey)),
+              keyboardType: TextInputType.text,
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: 'RobotoCondensed',
+              ),
+              decoration: InputDecoration(
+                  contentPadding: EdgeInsets.only(top: 14.0, bottom: 14.0),
+                  suffixIcon: Icon(
+                    Icons.info,
+                    color: Colors.white,
+                  ),
+                  prefixIcon: Icon(
+                    Icons.person_rounded,
+                    color: Colors.white,
+                  ),
+                  hintText: 'Your username',
+                  hintStyle: TextStyle(color: Colors.grey))
           ),
         ),
       ],
@@ -215,7 +225,8 @@ class ForgetPassword extends StatelessWidget {
         //padding: EdgeInsets.only(right: 0.0),
         child: Text(
           'Forgot Password?',
-          style: TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.w400),
+          style:
+              TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.w400),
         ),
       ),
     );
@@ -253,7 +264,14 @@ class CreateAccount extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return GestureDetector(
-      onTap: () => print('Sign Up Button Pressed'),
+      onTap: () => {
+        print('Sign Up Button Pressed'),
+      Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) =>
+      SignUp(),
+      ))
+      },
       child: RichText(
         text: TextSpan(
           children: [

@@ -1,7 +1,7 @@
 import 'package:crypto_app_basic/app_widgets/dashboard.dart';
 import 'package:crypto_app_basic/app_widgets/exchange.dart';
 import 'package:crypto_app_basic/app_widgets/market.dart';
-import 'package:crypto_app_basic/app_widgets/sign_in.dart';
+import 'package:crypto_app_basic/app_widgets/sign_In.dart';
 import 'package:flutter/material.dart';
 
 class Explorer extends StatelessWidget {
@@ -50,12 +50,16 @@ class Explorer extends StatelessWidget {
                 currentAccountPicture: CircleAvatar(
                     //foregroundColor: Colors.black,
                     backgroundColor: Colors.black38,
-                    child: Text("User\nPicture",
+                    child: CircleAvatar(
+                      backgroundImage: AssetImage('images/signup.png'),
+                      radius: 100,
+                    )
+                  /*Text("User\nPicture",
                         style: TextStyle(
                           fontSize: 15.0,
                         ))),
-                decoration: BoxDecoration(color: Colors.blueGrey),
-              )),
+                decoration: BoxDecoration(color: Colors.blueGrey)),*/
+              ),)),
               ListTile(
                 leading: Icon(Icons.dashboard_outlined),
                 title: Text("Dashboard"),
