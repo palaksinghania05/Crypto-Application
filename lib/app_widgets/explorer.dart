@@ -1,3 +1,4 @@
+import 'package:crypto_app_basic/app_widgets/FAQ.dart';
 import 'package:crypto_app_basic/app_widgets/dashboard.dart';
 import 'package:crypto_app_basic/app_widgets/exchange.dart';
 import 'package:crypto_app_basic/app_widgets/market.dart';
@@ -116,6 +117,12 @@ class Explorer extends StatelessWidget {
               ListTile(
                 leading: Icon(Icons.question_answer_rounded),
                 title: Text("FAQs"),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => FAQ()),
+                  );
+                },
                 trailing: Icon(Icons.arrow_forward_ios),
               ),
             ])),

@@ -1,7 +1,6 @@
 import 'package:crypto_app_basic/app_widgets/market.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_currency_converter/Currency.dart';
 
 import 'api_requests.dart';
 

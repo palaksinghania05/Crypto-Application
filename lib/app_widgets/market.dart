@@ -83,7 +83,8 @@ class _MarketState extends State<Market> {
             return Text("INR $result", style: TextStyle(color: Colors.white, fontSize: 15));
           }
           else{
-            return Text("Loading..",style: TextStyle(color: Colors.white, fontSize: 15));
+            var alternate = double.parse(price)*74.42;
+            return Text("INR $alternate",style: TextStyle(color: Colors.white, fontSize: 15));
           }
         });
 

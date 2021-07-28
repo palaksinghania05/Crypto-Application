@@ -1,3 +1,4 @@
+import 'package:crypto_app_basic/app_widgets/FAQ.dart';
 import 'package:crypto_app_basic/app_widgets/market.dart';
 import 'package:flutter/material.dart';
 
@@ -277,7 +278,10 @@ class Home extends StatelessWidget {
             color: Colors.white,
           ),
         onPressed: (){
-            //action
+                            Navigator.push(
+                              context,
+                               MaterialPageRoute(builder: (context) => FAQ()),
+                        );
         },
       ),
     );
