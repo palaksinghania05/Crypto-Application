@@ -9,7 +9,7 @@ class ImageAsset extends StatelessWidget {
       radius: 110,
       backgroundColor: Colors.grey,
       child: CircleAvatar(
-        backgroundImage: AssetImage('images/cryptowallet.png'),
+        backgroundImage: AssetImage('images/cryptologo.png'),
         radius: 110,
       ),
     );
