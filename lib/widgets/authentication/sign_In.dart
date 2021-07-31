@@ -1,5 +1,5 @@
-import 'package:crypto_app_basic/app_widgets/explorer.dart';
-import 'package:crypto_app_basic/app_widgets/signUp.dart';
+import 'package:crypto_app_basic/widgets/extras/explorer.dart';
+import 'package:crypto_app_basic/widgets/authentication/signUp.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter/material.dart';
 
@@ -8,11 +8,11 @@ class ImageAsset extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return CircleAvatar(
-      radius: 100,
+      radius: 110,
       backgroundColor: Colors.grey,
       child: CircleAvatar(
         backgroundImage: AssetImage('images/cryptowallet.png'),
-        radius: 100,
+        radius: 110,
       ),
     );
   }
@@ -49,7 +49,7 @@ class SignInButton extends StatelessWidget {
       elevation: 50,
       title: Center(
           child: Text(
-        "Login Successfull !!",
+        "Login Successful !!",
         style: TextStyle(fontSize: 25),
       )),
       content: Text(
@@ -87,14 +87,14 @@ class SignIn extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-        resizeToAvoidBottomInset: false,
+     //   resizeToAvoidBottomInset: false,
         body: SingleChildScrollView(
             child: Center(
                 child: Container(
                     alignment: Alignment.center,
                     color: Colors.black,
                     child: Column(children: <Widget>[
-                      SizedBox(height: 25),
+                      SizedBox(height: 50),
                       ImageAsset(),
                       SizedBox(height: 15),
                       RichText(
@@ -121,7 +121,8 @@ class SignIn extends StatelessWidget {
                           style: TextStyle(
                               color: Colors.grey, fontWeight: FontWeight.w400)),
                       SocialPages(),
-                      CreateAccount()
+                      CreateAccount(),
+                      SizedBox(height: 15),
                     ])))));
   }
 }
@@ -163,8 +164,7 @@ class UsernameEntry extends StatelessWidget {
                     color: Colors.white,
                   ),
                   hintText: 'Your username',
-                  hintStyle: TextStyle(color: Colors.grey))
-          ),
+                  hintStyle: TextStyle(color: Colors.grey))),
         ),
       ],
     );
@@ -248,7 +248,7 @@ class SocialPages extends StatelessWidget {
             text: "Continue with Google",
             splashColor: Colors.black,
           ),
-          SizedBox(height: 5),
+          SizedBox(height: 8),
           FacebookSignInButton(
             onPressed: () => print('Facebook Sign In Button Pressed'),
             splashColor: Colors.black,
@@ -266,11 +266,11 @@ class CreateAccount extends StatelessWidget {
     return GestureDetector(
       onTap: () => {
         print('Sign Up Button Pressed'),
-      Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) =>
-      SignUp(),
-      ))
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SignUp(),
+            ))
       },
       child: RichText(
         text: TextSpan(
@@ -279,7 +279,7 @@ class CreateAccount extends StatelessWidget {
               text: 'Don\'t have an Account? ',
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 15.0,
+                fontSize: 20.0,
                 fontWeight: FontWeight.w400,
               ),
             ),
@@ -287,7 +287,7 @@ class CreateAccount extends StatelessWidget {
               text: 'Sign Up',
               style: TextStyle(
                 color: Colors.blueAccent,
-                fontSize: 15.0,
+                fontSize: 20.0,
                 fontWeight: FontWeight.bold,
               ),
             ),

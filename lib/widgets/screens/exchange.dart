@@ -1,8 +1,7 @@
-import 'package:crypto_app_basic/app_widgets/market.dart';
+import 'package:crypto_app_basic/widgets/screens/market.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'api_requests.dart';
+import '../apis/api_requests.dart';
 
 // ignore: must_be_immutable
 class Exchange extends StatelessWidget{

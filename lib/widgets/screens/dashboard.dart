@@ -1,5 +1,5 @@
-import 'package:crypto_app_basic/app_widgets/FAQ.dart';
-import 'package:crypto_app_basic/app_widgets/market.dart';
+import 'package:crypto_app_basic/widgets/screens/FAQ.dart';
+import 'package:crypto_app_basic/widgets/screens/market.dart';
 import 'package:flutter/material.dart';
 
 class BitcoinImage extends StatelessWidget {
