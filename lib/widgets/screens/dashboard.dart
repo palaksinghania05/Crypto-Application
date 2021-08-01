@@ -2,7 +2,7 @@ import 'package:crypto_app_basic/widgets/screens/FAQ.dart';
 import 'package:crypto_app_basic/widgets/screens/market.dart';
 import 'package:flutter/material.dart';
 
-class BitcoinImage extends StatelessWidget {
+/*class BitcoinImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -15,9 +15,9 @@ class BitcoinImage extends StatelessWidget {
       ),
     );
   }
-}
+}*/
 
-class DashImage extends StatelessWidget {
+/*class DashImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -30,7 +30,7 @@ class DashImage extends StatelessWidget {
       ),
     );
   }
-}
+}*/
 
 /*class EthereumImage extends StatelessWidget {
   @override
@@ -180,7 +180,7 @@ class Home extends StatelessWidget {
                       ),
                     ]),
                     SizedBox(height: 15),
-                    Row(
+                    /*Row(
                       children: [
                         Container(
                           decoration: BoxDecoration(
@@ -240,7 +240,7 @@ class Home extends StatelessWidget {
                           ]),
                         )
                       ],
-                    ),
+                    ),*/
                     SizedBox(height: 30),
                     Row(children: [
                       SizedBox(width: 60),

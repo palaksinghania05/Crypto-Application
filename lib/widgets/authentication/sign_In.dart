@@ -1,5 +1,7 @@
 import 'package:crypto_app_basic/widgets/extras/explorer.dart';
 import 'package:crypto_app_basic/widgets/authentication/signUp.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter/material.dart';
 
@@ -18,199 +20,237 @@ class ImageAsset extends StatelessWidget {
   }
 }
 
-class SignInButton extends StatelessWidget {
+class SignIn extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Container(
-        // ignore: deprecated_member_use
-        child: RaisedButton(
-          child: Text(
-            "SIGN IN",
-            style: TextStyle(
-              fontSize: 20,
-              fontFamily: "Roboto Condensed",
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          color: Colors.blueGrey,
-          elevation: 100.0,
-          onPressed: () {
-            //action
-            signIn(context);
-          },
-        ),
-        width: 100,
-        height: 50);
-  }
-
-  void signIn(BuildContext context) {
-    var alertDialog = AlertDialog(
-      elevation: 50,
-      title: Center(
-          child: Text(
-        "Login Successful !!",
-        style: TextStyle(fontSize: 25),
-      )),
-      content: Text(
-        "Click here \nto go to Home Page",
-        style: TextStyle(
-            color: Colors.green, fontWeight: FontWeight.bold, fontSize: 18),
-        textAlign: TextAlign.center,
-      ),
-      actions: [
-        FlatButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Explorer()),
-              );
-            },
-            child: Text("Go to Home Page",
-                style: TextStyle(
-                    color: Colors.blue,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center))
-      ],
-    );
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return alertDialog;
-        });
-  }
+  _SignInState createState() => new _SignInState();
 }
 
-class SignIn extends StatelessWidget {
+class _SignInState extends State<SignIn> {
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+
+  String emailValidator(String value) {
+    Pattern pattern =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regex = new RegExp(pattern);
+    if (!regex.hasMatch(value)) {
+      return 'Email format is invalid';
+    } else {
+      return null;
+    }
+  }
+
+ /* Future<void> signIn(BuildContext context, var _formKey, String _email,
+      String _password) async {
+    final formState = _formKey.currentState;
+    if (formState.validate()) {
+      //firebase authentication
+      formState.save();
+      try {
+        FirebaseUser user = (await FirebaseAuth.instance
+                .signInWithEmailAndPassword(email: _email, password: _password))
+            .user;
+        if (user != null) {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Explorer()));
+        }
+      } on PlatformException {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text(
+                  "You are not registered!!",
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                ),
+                actions: [
+                  FlatButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => SignIn()),
+                        );
+                      },
+                      child: Text("Okay",
+                          style: TextStyle(
+                              color: Colors.blue,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center))
+                ],
+              );
+            });
+      } catch (e) {
+        print(e);
+      }
+    }
+  }*/
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-     //   resizeToAvoidBottomInset: false,
+        //   resizeToAvoidBottomInset: false,
         body: SingleChildScrollView(
             child: Center(
                 child: Container(
                     alignment: Alignment.center,
                     color: Colors.black,
-                    child: Column(children: <Widget>[
-                      SizedBox(height: 50),
-                      ImageAsset(),
-                      SizedBox(height: 15),
-                      RichText(
-                          text: TextSpan(
-                              text: 'MyCrypt',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 25),
-                              children: <TextSpan>[
-                            TextSpan(
-                              text: 'Wallet',
+                    child: Form(
+                        key: _formkey,
+                        child: Column(children: <Widget>[
+                          SizedBox(height: 50),
+                          ImageAsset(),
+                          SizedBox(height: 15),
+                          RichText(
+                              text: TextSpan(
+                                  text: 'MyCrypt',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 25),
+                                  children: <TextSpan>[
+                                TextSpan(
+                                  text: 'Wallet',
+                                  style: TextStyle(
+                                      color: Colors.blueAccent, fontSize: 18),
+                                ),
+                              ])),
+                          SizedBox(height: 20.0),
+                          // EmailEntry(_email),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                'Email',
+                                style: TextStyle(
+                                  color: Colors.blueGrey,
+                                  fontSize: 15,
+                                ),
+                              ),
+                              SizedBox(height: 10.0),
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                height: 60.0,
+                                width: 310.0,
+                                decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.grey)),
+                                child: TextFormField(
+                                  keyboardType: TextInputType.emailAddress,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: 'RobotoCondensed',
+                                  ),
+                                  decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.only(
+                                          top: 14.0, bottom: 14.0),
+                                      prefixIcon: Icon(
+                                        Icons.email,
+                                        color: Colors.white,
+                                      ),
+                                      hintText: 'Enter your Email',
+                                      hintStyle: TextStyle(color: Colors.grey)),
+                                   controller: _emailController,
+                                  validator: emailValidator,
+                                 // onSaved: (input) => _email = input,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 10.0),
+                          // PasswordEntry(_password),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                'Password',
+                                style: TextStyle(
+                                  color: Colors.blueGrey,
+                                  fontSize: 15,
+                                ),
+                              ),
+                              SizedBox(height: 10.0),
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                height: 60.0,
+                                width: 310.0,
+                                decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.grey)),
+                                child: TextFormField(
+                                  obscureText: true,
+                                  autocorrect: false,
+                                  enableSuggestions: false,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: 'RobotoCondensed',
+                                  ),
+                                  decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.only(
+                                          top: 14.0, bottom: 14.0),
+                                      prefixIcon: Icon(
+                                        Icons.lock,
+                                        color: Colors.white,
+                                      ),
+                                      hintText: 'Enter your Password',
+                                      hintStyle: TextStyle(color: Colors.grey)),
+                                  validator: (input) {
+                                    if (input.length < 8) {
+                                      return 'Password needs to be at least 8 characters';
+                                    }
+                                  },
+                               //   onSaved: (input) => _password = input,
+                                  controller: _passwordController,
+                                ),
+                              ),
+                            ],
+                          ),
+                          ForgetPassword(),
+                          // SignInButton(_formkey, _email, _password),
+                          Container(
+                              // ignore: deprecated_member_use
+                              child: RaisedButton(
+                                child: Text(
+                                  "SIGN IN",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontFamily: "Roboto Condensed",
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                                color: Colors.blueGrey,
+                                elevation: 100.0,
+                                //action
+                                onPressed: () async {
+                                  try{
+                                    FirebaseUser user = (await FirebaseAuth.instance
+                                        .signInWithEmailAndPassword(email: _emailController.text, password: _passwordController.text)).user;
+                                   if(user!=null){
+                                     Navigator.push(
+                                         context,
+                                         MaterialPageRoute(
+                                           builder: (context) => Explorer(),
+                                         ));
+                                   }
+                                  }
+                                  catch(e){
+                                    print(e);
+                                    _emailController.text = "";
+                                    _passwordController.text = "";
+                                    //TODO: alert
+                                  }
+                                }
+                              ),
+                              width: 100,
+                              height: 50),
+                          SizedBox(height: 15),
+                          Text(
+                              "-------------------------- or -----------------------------",
                               style: TextStyle(
-                                  color: Colors.blueAccent, fontSize: 18),
-                            ),
-                          ])),
-                      SizedBox(height: 20.0),
-                      UsernameEntry(),
-                      SizedBox(height: 10.0),
-                      PasswordEntry(),
-                      ForgetPassword(),
-                      SignInButton(),
-                      SizedBox(height: 15),
-                      Text(
-                          "-------------------------- or -----------------------------",
-                          style: TextStyle(
-                              color: Colors.grey, fontWeight: FontWeight.w400)),
-                      SocialPages(),
-                      CreateAccount(),
-                      SizedBox(height: 15),
-                    ])))));
-  }
-}
-
-class UsernameEntry extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          'Username',
-          style: TextStyle(
-            color: Colors.blueGrey,
-            fontSize: 15,
-          ),
-        ),
-        SizedBox(height: 10.0),
-        Container(
-          alignment: Alignment.centerLeft,
-          height: 60.0,
-          width: 310.0,
-          decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
-          child: TextField(
-              keyboardType: TextInputType.text,
-              style: TextStyle(
-                color: Colors.white,
-                fontFamily: 'RobotoCondensed',
-              ),
-              decoration: InputDecoration(
-                  contentPadding: EdgeInsets.only(top: 14.0, bottom: 14.0),
-                  suffixIcon: Icon(
-                    Icons.info,
-                    color: Colors.white,
-                  ),
-                  prefixIcon: Icon(
-                    Icons.person_rounded,
-                    color: Colors.white,
-                  ),
-                  hintText: 'Your username',
-                  hintStyle: TextStyle(color: Colors.grey))),
-        ),
-      ],
-    );
-  }
-}
-
-class PasswordEntry extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          'Password',
-          style: TextStyle(
-            color: Colors.blueGrey,
-            fontSize: 15,
-          ),
-        ),
-        SizedBox(height: 10.0),
-        Container(
-          alignment: Alignment.centerLeft,
-          height: 60.0,
-          width: 310.0,
-          decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
-          child: TextField(
-            obscureText: true,
-            autocorrect: false,
-            enableSuggestions: false,
-            style: TextStyle(
-              color: Colors.white,
-              fontFamily: 'RobotoCondensed',
-            ),
-            decoration: InputDecoration(
-                contentPadding: EdgeInsets.only(top: 14.0, bottom: 14.0),
-                prefixIcon: Icon(
-                  Icons.lock,
-                  color: Colors.white,
-                ),
-                hintText: 'Enter your Password',
-                hintStyle: TextStyle(color: Colors.grey)),
-          ),
-        ),
-      ],
-    );
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.w400)),
+                          SocialPages(),
+                          CreateAccount(),
+                          SizedBox(height: 15),
+                        ]))))));
   }
 }
 

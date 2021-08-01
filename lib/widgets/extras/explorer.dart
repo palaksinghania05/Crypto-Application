@@ -2,9 +2,17 @@ import 'package:crypto_app_basic/widgets/screens/FAQ.dart';
 import 'package:crypto_app_basic/widgets/screens/dashboard.dart';
 import 'package:crypto_app_basic/widgets/screens/market.dart';
 import 'package:crypto_app_basic/widgets/authentication/sign_In.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class Explorer extends StatelessWidget {
+class Explorer extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _ExplorerState();
+  }
+}
+
+class _ExplorerState extends State<Explorer>{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -24,19 +32,10 @@ class Explorer extends StatelessWidget {
             actions: [
               Padding(
                 padding: EdgeInsets.only(right: 20.0),
-                child: Icon(
-                  Icons.search,
-                  size: 26.0,
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(right: 20.0),
                 child: IconButton(
                   //  icon: Icon(Icons.more_vert),
                   icon: Icon(Icons.logout),
-                  onPressed: () {
-                    logOut(context);
-                  },
+                  onPressed: logOut
                 ),
               )
             ]),
@@ -128,8 +127,25 @@ class Explorer extends StatelessWidget {
         body: Home());
   }
 
-  void logOut(BuildContext context) {
-    var alertDialog = AlertDialog(
+  void logOut() async{
+    try{
+      await FirebaseAuth.instance.signOut();
+      FirebaseAuth.instance.onAuthStateChanged.listen((FirebaseUser user) {
+        if(user == null){
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SignIn(),
+              ));
+        }
+        else
+          print("User is there");
+      });
+    }
+    catch(e){
+      print(e.toString());
+    }
+   /* var alertDialog = AlertDialog(
         title: Center(child: Text('Log Out', style: TextStyle(fontSize: 20))),
         content: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
           Container(
@@ -160,6 +176,6 @@ class Explorer extends StatelessWidget {
         context: context,
         builder: (BuildContext context) {
           return alertDialog;
-        });
+        });*/
   }
 }
