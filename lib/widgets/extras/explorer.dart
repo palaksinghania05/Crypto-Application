@@ -12,7 +12,7 @@ class Explorer extends StatefulWidget {
   }
 }
 
-class _ExplorerState extends State<Explorer>{
+class _ExplorerState extends State<Explorer> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -33,10 +33,9 @@ class _ExplorerState extends State<Explorer>{
               Padding(
                 padding: EdgeInsets.only(right: 20.0),
                 child: IconButton(
-                  //  icon: Icon(Icons.more_vert),
-                  icon: Icon(Icons.logout),
-                  onPressed: logOut
-                ),
+                    //  icon: Icon(Icons.more_vert),
+                    icon: Icon(Icons.logout),
+                    onPressed: logOut),
               )
             ]),
         drawer: Drawer(
@@ -53,12 +52,13 @@ class _ExplorerState extends State<Explorer>{
                       backgroundImage: AssetImage('images/signup.png'),
                       radius: 100,
                     )
-                  /*Text("User\nPicture",
+                    /*Text("User\nPicture",
                         style: TextStyle(
                           fontSize: 15.0,
                         ))),
                 decoration: BoxDecoration(color: Colors.blueGrey)),*/
-              ),)),
+                    ),
+              )),
               ListTile(
                 leading: Icon(Icons.dashboard_outlined),
                 title: Text("Dashboard"),
@@ -83,13 +83,13 @@ class _ExplorerState extends State<Explorer>{
               ),
               ListTile(
                 leading: Icon(Icons.attach_money_outlined),
-                title: Text("Exchange"),
-                onTap: () {
-                  /*Navigator.push(
+                title: Text("My Wallets"),
+                /* onTap: () {
+                  Navigator.push(
                     context,
-                   // MaterialPageRoute(builder: (context) => Exchange(cryptodata)),
-                  );*/
-                },
+                    MaterialPageRoute(builder: (context) => Exchange(cryptodata)),
+                  );
+                },*/
                 trailing: Icon(Icons.arrow_forward_ios),
               ),
               ListTile(
@@ -127,25 +127,24 @@ class _ExplorerState extends State<Explorer>{
         body: Home());
   }
 
-  void logOut() async{
-    try{
+  void logOut() async {
+    try {
       await FirebaseAuth.instance.signOut();
       FirebaseAuth.instance.onAuthStateChanged.listen((FirebaseUser user) {
-        if(user == null){
+        if (user == null) {
+          print("Signed Out!");
           Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => SignIn(),
               ));
-        }
-        else
+        } else
           print("User is there");
       });
-    }
-    catch(e){
+    } catch (e) {
       print(e.toString());
     }
-   /* var alertDialog = AlertDialog(
+    /* var alertDialog = AlertDialog(
         title: Center(child: Text('Log Out', style: TextStyle(fontSize: 20))),
         content: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
           Container(

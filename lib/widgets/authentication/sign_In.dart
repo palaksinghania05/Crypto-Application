@@ -1,9 +1,11 @@
 import 'package:crypto_app_basic/widgets/extras/explorer.dart';
 import 'package:crypto_app_basic/widgets/authentication/signUp.dart';
+import 'package:crypto_app_basic/widgets/extras/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ImageAsset extends StatelessWidget {
   @override
@@ -25,10 +27,12 @@ class SignIn extends StatefulWidget {
   _SignInState createState() => new _SignInState();
 }
 
+TextEditingController _emailController = TextEditingController();
+TextEditingController _passwordController = TextEditingController();
+
 class _SignInState extends State<SignIn> {
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+  bool loading = false;
 
   String emailValidator(String value) {
     Pattern pattern =
@@ -41,216 +45,184 @@ class _SignInState extends State<SignIn> {
     }
   }
 
- /* Future<void> signIn(BuildContext context, var _formKey, String _email,
-      String _password) async {
-    final formState = _formKey.currentState;
-    if (formState.validate()) {
-      //firebase authentication
-      formState.save();
-      try {
-        FirebaseUser user = (await FirebaseAuth.instance
-                .signInWithEmailAndPassword(email: _email, password: _password))
-            .user;
-        if (user != null) {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => Explorer()));
-        }
-      } on PlatformException {
-        showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: Text(
-                  "You are not registered!!",
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                ),
-                actions: [
-                  FlatButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => SignIn()),
-                        );
-                      },
-                      child: Text("Okay",
-                          style: TextStyle(
-                              color: Colors.blue,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold),
-                          textAlign: TextAlign.center))
-                ],
-              );
-            });
-      } catch (e) {
-        print(e);
-      }
-    }
-  }*/
-
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Scaffold(
-        //   resizeToAvoidBottomInset: false,
-        body: SingleChildScrollView(
-            child: Center(
-                child: Container(
-                    alignment: Alignment.center,
-                    color: Colors.black,
-                    child: Form(
-                        key: _formkey,
-                        child: Column(children: <Widget>[
-                          SizedBox(height: 50),
-                          ImageAsset(),
-                          SizedBox(height: 15),
-                          RichText(
-                              text: TextSpan(
-                                  text: 'MyCrypt',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 25),
-                                  children: <TextSpan>[
-                                TextSpan(
-                                  text: 'Wallet',
-                                  style: TextStyle(
-                                      color: Colors.blueAccent, fontSize: 18),
-                                ),
-                              ])),
-                          SizedBox(height: 20.0),
-                          // EmailEntry(_email),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                'Email',
-                                style: TextStyle(
-                                  color: Colors.blueGrey,
-                                  fontSize: 15,
-                                ),
+    return loading
+        ? Loading()
+        : Scaffold(
+            //   resizeToAvoidBottomInset: false,
+            body: SingleChildScrollView(
+                child: Center(
+                    child: Container(
+                        alignment: Alignment.center,
+                        color: Colors.black,
+                        child: Form(
+                            key: _formkey,
+                            child: Column(children: <Widget>[
+                              SizedBox(height: 50),
+                              ImageAsset(),
+                              SizedBox(height: 15),
+                              RichText(
+                                  text: TextSpan(
+                                      text: 'MyCrypt',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 25),
+                                      children: <TextSpan>[
+                                    TextSpan(
+                                      text: 'Wallet',
+                                      style: TextStyle(
+                                          color: Colors.blueAccent,
+                                          fontSize: 18),
+                                    ),
+                                  ])),
+                              SizedBox(height: 20.0),
+                              // EmailEntry(_email),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    'Email',
+                                    style: TextStyle(
+                                      color: Colors.blueGrey,
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                  SizedBox(height: 10.0),
+                                  Container(
+                                    alignment: Alignment.centerLeft,
+                                    height: 60.0,
+                                    width: 310.0,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(color: Colors.grey)),
+                                    child: TextFormField(
+                                      keyboardType: TextInputType.emailAddress,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'RobotoCondensed',
+                                      ),
+                                      decoration: InputDecoration(
+                                          contentPadding: EdgeInsets.only(
+                                              top: 14.0, bottom: 14.0),
+                                          prefixIcon: Icon(
+                                            Icons.email,
+                                            color: Colors.white,
+                                          ),
+                                          hintText: 'Enter your Email',
+                                          hintStyle:
+                                              TextStyle(color: Colors.grey)),
+                                      controller: _emailController,
+                                      validator: emailValidator,
+                                      // onSaved: (input) => _email = input,
+                                    ),
+                                  ),
+                                ],
                               ),
                               SizedBox(height: 10.0),
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                height: 60.0,
-                                width: 310.0,
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.grey)),
-                                child: TextFormField(
-                                  keyboardType: TextInputType.emailAddress,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: 'RobotoCondensed',
+                              // PasswordEntry(_password),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    'Password',
+                                    style: TextStyle(
+                                      color: Colors.blueGrey,
+                                      fontSize: 15,
+                                    ),
                                   ),
-                                  decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.only(
-                                          top: 14.0, bottom: 14.0),
-                                      prefixIcon: Icon(
-                                        Icons.email,
+                                  SizedBox(height: 10.0),
+                                  Container(
+                                    alignment: Alignment.centerLeft,
+                                    height: 60.0,
+                                    width: 310.0,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(color: Colors.grey)),
+                                    child: TextFormField(
+                                      obscureText: true,
+                                      autocorrect: false,
+                                      enableSuggestions: false,
+                                      style: TextStyle(
                                         color: Colors.white,
+                                        fontFamily: 'RobotoCondensed',
                                       ),
-                                      hintText: 'Enter your Email',
-                                      hintStyle: TextStyle(color: Colors.grey)),
-                                   controller: _emailController,
-                                  validator: emailValidator,
-                                 // onSaved: (input) => _email = input,
-                                ),
+                                      decoration: InputDecoration(
+                                          contentPadding: EdgeInsets.only(
+                                              top: 14.0, bottom: 14.0),
+                                          prefixIcon: Icon(
+                                            Icons.lock,
+                                            color: Colors.white,
+                                          ),
+                                          hintText: 'Enter your Password',
+                                          hintStyle:
+                                              TextStyle(color: Colors.grey)),
+                                      validator: (input) {
+                                        if (input.length < 8) {
+                                          return 'Password needs to be at least 8 characters';
+                                        }
+                                      },
+                                      //   onSaved: (input) => _password = input,
+                                      controller: _passwordController,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                          SizedBox(height: 10.0),
-                          // PasswordEntry(_password),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
+                              ForgetPassword(),
+                              // SignInButton(_formkey, _email, _password),
+                              Container(
+                                  // ignore: deprecated_member_use
+                                  child: RaisedButton(
+                                      child: Text(
+                                        "SIGN IN",
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontFamily: "Roboto Condensed",
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                      color: Colors.blueGrey,
+                                      elevation: 100.0,
+                                      //action
+                                      onPressed: () async {
+                                        try {
+                                          FirebaseUser user = (await FirebaseAuth
+                                                  .instance
+                                                  .signInWithEmailAndPassword(
+                                                      email:
+                                                          _emailController.text,
+                                                      password:
+                                                          _passwordController
+                                                              .text))
+                                              .user;
+                                          if (user != null) {
+                                            setState(() {
+                                              loading = true;
+                                            });
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      Explorer(),
+                                                ));
+                                          }
+                                        } catch (e) {
+                                          print(e);
+                                          _emailController.text = "";
+                                          _passwordController.text = "";
+                                          //TODO: alert
+                                        }
+                                      }),
+                                  width: 100,
+                                  height: 50),
+                              SizedBox(height: 15),
                               Text(
-                                'Password',
-                                style: TextStyle(
-                                  color: Colors.blueGrey,
-                                  fontSize: 15,
-                                ),
-                              ),
-                              SizedBox(height: 10.0),
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                height: 60.0,
-                                width: 310.0,
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.grey)),
-                                child: TextFormField(
-                                  obscureText: true,
-                                  autocorrect: false,
-                                  enableSuggestions: false,
+                                  "-------------------------- or -----------------------------",
                                   style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: 'RobotoCondensed',
-                                  ),
-                                  decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.only(
-                                          top: 14.0, bottom: 14.0),
-                                      prefixIcon: Icon(
-                                        Icons.lock,
-                                        color: Colors.white,
-                                      ),
-                                      hintText: 'Enter your Password',
-                                      hintStyle: TextStyle(color: Colors.grey)),
-                                  validator: (input) {
-                                    if (input.length < 8) {
-                                      return 'Password needs to be at least 8 characters';
-                                    }
-                                  },
-                               //   onSaved: (input) => _password = input,
-                                  controller: _passwordController,
-                                ),
-                              ),
-                            ],
-                          ),
-                          ForgetPassword(),
-                          // SignInButton(_formkey, _email, _password),
-                          Container(
-                              // ignore: deprecated_member_use
-                              child: RaisedButton(
-                                child: Text(
-                                  "SIGN IN",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontFamily: "Roboto Condensed",
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                                color: Colors.blueGrey,
-                                elevation: 100.0,
-                                //action
-                                onPressed: () async {
-                                  try{
-                                    FirebaseUser user = (await FirebaseAuth.instance
-                                        .signInWithEmailAndPassword(email: _emailController.text, password: _passwordController.text)).user;
-                                   if(user!=null){
-                                     Navigator.push(
-                                         context,
-                                         MaterialPageRoute(
-                                           builder: (context) => Explorer(),
-                                         ));
-                                   }
-                                  }
-                                  catch(e){
-                                    print(e);
-                                    _emailController.text = "";
-                                    _passwordController.text = "";
-                                    //TODO: alert
-                                  }
-                                }
-                              ),
-                              width: 100,
-                              height: 50),
-                          SizedBox(height: 15),
-                          Text(
-                              "-------------------------- or -----------------------------",
-                              style: TextStyle(
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.w400)),
-                          SocialPages(),
-                          CreateAccount(),
-                          SizedBox(height: 15),
-                        ]))))));
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.w400)),
+                              SocialPages(),
+                              CreateAccount(),
+                              SizedBox(height: 15),
+                            ]))))));
   }
 }
 

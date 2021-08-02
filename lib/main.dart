@@ -10,7 +10,6 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-
   @override
   void initState() {
     super.initState();
@@ -19,9 +18,8 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "MyCryptWallet",
-      home: SplashScreen()
-    );
+        debugShowCheckedModeBanner: false,
+        title: "MyCryptWallet",
+        home: SplashScreen());
   }
 }

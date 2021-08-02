@@ -1,5 +1,7 @@
+import 'package:crypto_app_basic/widgets/apis/currency_request.dart';
 import 'package:crypto_app_basic/widgets/screens/FAQ.dart';
 import 'package:crypto_app_basic/widgets/screens/market.dart';
+import 'package:crypto_app_basic/widgets/screens/subscribed.dart';
 import 'package:flutter/material.dart';
 
 /*class BitcoinImage extends StatelessWidget {
@@ -48,6 +50,11 @@ import 'package:flutter/material.dart';
 }*/
 
 class Home extends StatelessWidget {
+  /*String number_of_wallets = "0";
+  Home(String number){
+    this.number_of_wallets = number;
+}*/
+  List<CustomCurrency> subscribed = [];
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -83,82 +90,46 @@ class Home extends StatelessWidget {
                     ]),
                     SizedBox(height: 10),
                     Container(
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.grey.withOpacity(0.2),
-                              spreadRadius: 10,
-                              blurRadius: 5),
-                        ],
-                      ),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.grey.withOpacity(0.2),
+                                spreadRadius: 10,
+                                blurRadius: 5),
+                          ],
+                        ),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(children: [
                                 SizedBox(width: 20),
                                 Text(
-                                  "2",
+                                  "0",
                                   style: TextStyle(
                                       color: Colors.purpleAccent, fontSize: 40),
                                   textDirection: TextDirection.ltr,
                                 ),
-                                SizedBox(width: 250),
-                                Text(
-                                  "1,000",
-                                  style: TextStyle(
-                                      color: Colors.purpleAccent, fontSize: 20),
-                                  textDirection: TextDirection.ltr,
-                                )
-                              ],
-                            ),
-                            //SizedBox(height: 7),
-                            Row(
-                              children: [
-                                SizedBox(width: 10),
+                              ]),
+                              SizedBox(height: 7),
+                              Row(children: [
+                                SizedBox(width: 20),
                                 Text("Wallets",
                                     style: TextStyle(
                                         fontSize: 20, color: Colors.white)),
-                                SizedBox(width: 190),
-                                Text("Transactions",
-                                    style: TextStyle(
-                                        fontSize: 15, color: Colors.white)),
-                              ],
-                            ),
-                            SizedBox(height: 25),
-                            Row(children: [
-                              SizedBox(width: 10),
-                              Text("Current Balance",
-                                  style: TextStyle(
-                                      fontSize: 15, color: Colors.white)),
-                            ]),
-                            SizedBox(height: 7),
-                            Row(
-                              children: [
-                                SizedBox(width: 20),
-                                Text(
-                                  "500 INR",
-                                  style: TextStyle(
-                                      color: Colors.purpleAccent, fontSize: 20),
-                                  textDirection: TextDirection.ltr,
-                                )
-                              ],
-                            ),
-                            //SizedBox(height: 20),
-                            Row(children: [
-                              SizedBox(width: 270),
-                              TextButton(
-                                  onPressed: () =>
-                                      print("More Details Pressed"),
-                                  child: Text("More Details",
-                                      style: TextStyle(
-                                          color: Colors.blueAccent,
-                                          fontSize: 15)))
-                            ])
-                          ]),
-                    ),
+                              ]),
+                              Row(children: [
+                                SizedBox(width: 270),
+                                TextButton(
+                                    onPressed: () =>
+                                        print("More Details Pressed"),
+                                    child: Text("More Details",
+                                        style: TextStyle(
+                                            color: Colors.blueAccent,
+                                            fontSize: 15)))
+                              ])
+                            ])),
                     SizedBox(height: 15),
-                    Row(children: [
+                   /* Row(children: [
                       SizedBox(width: 5),
                       Text(
                         'My Wallets',
@@ -180,7 +151,7 @@ class Home extends StatelessWidget {
                       ),
                     ]),
                     SizedBox(height: 15),
-                    /*Row(
+                    Row(
                       children: [
                         Container(
                           decoration: BoxDecoration(
@@ -241,7 +212,7 @@ class Home extends StatelessWidget {
                         )
                       ],
                     ),*/
-                    SizedBox(height: 30),
+                    Spacer(flex: 2),
                     Row(children: [
                       SizedBox(width: 60),
                       Container(
@@ -267,21 +238,50 @@ class Home extends StatelessWidget {
                             },
                           ),
                           width: 260,
-                          height: 40)
+                          height: 40),
                     ]),
+                    SizedBox(height: 20,),
+                    Row(children: [
+                      SizedBox(width: 60),
+                      Container(
+                          alignment: Alignment.center,
+                          child: RaisedButton(
+                            child: Text(
+                              "Subscribed Currencies",
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontFamily: "Roboto Condensed",
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            color: Colors.blueGrey,
+                            elevation: 100.0,
+                            onPressed: () {
+                              //action
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SubscribedCurrencies()),
+                              );
+                            },
+                          ),
+                          width: 260,
+                          height: 40),
+                    ]),
+                    Spacer(flex: 1)
                   ]))),
       floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.black,
-          child: Icon(
-            Icons.support_agent_sharp,
-            size: 40,
-            color: Colors.white,
-          ),
-        onPressed: (){
-                            Navigator.push(
-                              context,
-                               MaterialPageRoute(builder: (context) => FAQ()),
-                        );
+        backgroundColor: Colors.black,
+        child: Icon(
+          Icons.support_agent_sharp,
+          size: 40,
+          color: Colors.white,
+        ),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => FAQ()),
+          );
         },
       ),
     );

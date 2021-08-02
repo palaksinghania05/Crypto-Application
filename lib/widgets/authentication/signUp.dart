@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crypto_app_basic/widgets/authentication/Auth_Service.dart';
 import 'package:crypto_app_basic/widgets/authentication/sign_In.dart';
+import 'package:crypto_app_basic/widgets/extras/database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -93,13 +96,13 @@ class _SignUpState extends State<SignUp> {
     // TODO: implement build
     return Scaffold(
         body: SingleChildScrollView(
-        child: Center(
-            child: Container(
-        alignment: Alignment.center,
-        color: Colors.black,
-        child: Form(
-                key: _registerFormKey,
-                child: Column(children: <Widget>[
+            child: Center(
+                child: Container(
+                    alignment: Alignment.center,
+                    color: Colors.black,
+                    child: Form(
+                        key: _registerFormKey,
+                        child: Column(children: <Widget>[
                           SizedBox(height: 50),
                           ImageAsset(),
                           SizedBox(height: 20),
@@ -154,7 +157,7 @@ class _SignUpState extends State<SignUp> {
                                               TextStyle(color: Colors.grey)),
                                       controller: _emailController,
                                       validator: emailValidator,
-                                     // onSaved: (input) => _email = input,
+                                      // onSaved: (input) => _email = input,
                                     ),
                                   ),
                                 ],
@@ -179,33 +182,31 @@ class _SignUpState extends State<SignUp> {
                                     decoration: BoxDecoration(
                                         border: Border.all(color: Colors.grey)),
                                     child: TextFormField(
-                                      keyboardType: TextInputType.text,
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'RobotoCondensed',
-                                      ),
-                                      decoration: InputDecoration(
-                                          contentPadding: EdgeInsets.only(
-                                              top: 14.0, bottom: 14.0),
-                                          suffixIcon: Icon(
-                                            Icons.info,
-                                            color: Colors.white,
-                                          ),
-                                          prefixIcon: Icon(
-                                            Icons.person,
-                                            color: Colors.white,
-                                          ),
-                                          hintText: 'Your username',
-                                          hintStyle:
-                                              TextStyle(color: Colors.grey)),
+                                        keyboardType: TextInputType.text,
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: 'RobotoCondensed',
+                                        ),
+                                        decoration: InputDecoration(
+                                            contentPadding: EdgeInsets.only(
+                                                top: 14.0, bottom: 14.0),
+                                            suffixIcon: Icon(
+                                              Icons.info,
+                                              color: Colors.white,
+                                            ),
+                                            prefixIcon: Icon(
+                                              Icons.person,
+                                              color: Colors.white,
+                                            ),
+                                            hintText: 'Your username',
+                                            hintStyle:
+                                                TextStyle(color: Colors.grey)),
                                         controller: _usernameController,
-                                      validator: (value) {
-                                        if (value.length < 5) {
-                                          return "Please enter a valid username.";
+                                        validator: (value) {
+                                          NameValidator.validate(value);
                                         }
-                                      },
-                                     // onSaved: (input) => _username = input,
-                                    ),
+                                        // onSaved: (input) => _username = input,
+                                        ),
                                   ),
                                 ],
                               ),
@@ -247,7 +248,7 @@ class _SignUpState extends State<SignUp> {
                                           hintText: 'Enter New Password',
                                           hintStyle:
                                               TextStyle(color: Colors.grey)),
-                                         controller: _passwordController,
+                                      controller: _passwordController,
                                       validator: pwdValidator,
                                       //onSaved: (input) => _password = input,
                                     ),
@@ -298,9 +299,9 @@ class _SignUpState extends State<SignUp> {
                                 ],
                               ),
                               SizedBox(height: 20),
-                             // SignUpButton()
+                              // SignUpButton()
                               Container(
-                                // ignore: deprecated_member_use
+                                  // ignore: deprecated_member_use
                                   child: RaisedButton(
                                       child: Text(
                                         "SIGN UP",
@@ -313,28 +314,25 @@ class _SignUpState extends State<SignUp> {
                                       color: Colors.grey,
                                       elevation: 100.0,
                                       onPressed: () async {
-                                        try{
-                                          FirebaseUser user = (await FirebaseAuth.instance
-                                              .createUserWithEmailAndPassword(email: _emailController.text, password: _passwordController.text)).user;
-                                          if(user!=null){
-                                            UserUpdateInfo updateUser = UserUpdateInfo();
-                                            updateUser.displayName = _usernameController.text;
-                                            user.updateProfile(updateUser);
+                                        try {
+                                          var userId = AuthService().createUserWithEmailAndPassword(
+                                              _emailController.text, _passwordController.text, _usernameController.text);
                                             Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
-                                                  builder: (context) => SignIn(),
+                                                  builder: (context) =>
+                                                      SignIn(),
                                                 ));
-                                          }
-                                        }
-                                        catch(e){
+                                          }catch (e) {
                                           print(e);
                                           _emailController.text = "";
                                           _passwordController.text = "";
                                           //TODO: alertdialog
                                         }
                                       })),
-                              SizedBox(height: 20,)
+                              SizedBox(
+                                height: 20,
+                              )
                             ],
                           ))
                         ]))))));

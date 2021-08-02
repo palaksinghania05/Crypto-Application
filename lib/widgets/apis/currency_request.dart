@@ -8,8 +8,11 @@ class CustomCurrency {
   final String name;
   final String marketPrice;
   final String change;
+  final String availableSupply;
+  final String maxSupply;
 
-  CustomCurrency(this.rank, this.symbol, this.name, this.marketPrice, this.change);
+  CustomCurrency(this.rank, this.symbol, this.name, this.marketPrice, this.change, this.availableSupply,
+      this.maxSupply);
 }
 
 
@@ -22,7 +25,7 @@ Future fetchAllCurrencies() async {
     for (var element in jsonData["data"]) {
       CustomCurrency currency = CustomCurrency(
           element["rank"], element["symbol"],
-          element["name"], element["priceUsd"], element["changePercent24Hr"]);
+          element["name"], element["priceUsd"], element["changePercent24Hr"], element["supply"], element["maxSupply"]);
       currencies.add(currency);
     }
     print(currencies.length);
@@ -31,16 +34,4 @@ Future fetchAllCurrencies() async {
     throw Exception("Failed to load currencies!!");
 }
 
-  Future<double> convertedCurrency() async{
-    final Uri currencyURL = Uri.https("free.currconv.com", "/api/v7/convert",{
-      "apiKey":"e061454d33893cc2234a",
-      "q": "USD_INR",
-      "compact": "ultra"
-    });
-    http.Response res = await http.get(currencyURL);
-    if(res.statusCode == 200){
-      var body = jsonDecode(res.body);
-      return body["USD_INR"];
-    }
-}
 

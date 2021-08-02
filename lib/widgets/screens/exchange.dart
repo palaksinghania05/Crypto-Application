@@ -1,72 +1,156 @@
+import 'package:crypto_app_basic/widgets/apis/image_request.dart';
+import 'package:crypto_app_basic/widgets/extras/database.dart';
 import 'package:crypto_app_basic/widgets/screens/market.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../apis/api_requests.dart';
+import '../apis/currency_request.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
-// ignore: must_be_immutable
-class Exchange extends StatelessWidget{
+class Exchange extends StatefulWidget {
+  var cryptodata;
+
+  Exchange(CustomCurrency cryptodata) {
+    this.cryptodata = cryptodata;
+  }
+
+  @override
+  State<StatefulWidget> createState() {
+    return _ExchangeState(cryptodata);
+  }
+}
+
+class _ExchangeState extends State<Exchange> {
+  String imageUri = "";
+
+  _getImage() async {
+    await image(symbol).then((String result) {
+      setState(() {
+        imageUri = result;
+        print(imageUri);
+      });
+    });
+  }
+
   var cryptoData;
   var name;
   var price;
+  var symbol;
+  var supply;
+  var maxSupply;
 
-  List<CustomCurrency> _subscribedList = [];
-
-  Exchange(CustomCurrency cryptoData){
+  _ExchangeState(CustomCurrency cryptoData) {
     this.cryptoData = cryptoData;
     this.name = cryptoData.name;
     this.price = double.parse(cryptoData.marketPrice).toStringAsFixed(3);
+    this.symbol = cryptoData.symbol;
+    this.supply = double.parse(cryptoData.availableSupply).toStringAsFixed(3);
+    // this.maxSupply = double.parse(cryptoData.maxSupply).toStringAsFixed(1);
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _getImage();
   }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
 
-   return Scaffold(
-     appBar: AppBar(
-       backgroundColor: Colors.black87,
-       title: Text(
-           name, style:TextStyle(color: Colors.white)
-       ),
-     ),
-     body: Center(
-         child: Container(
-             alignment: Alignment.topLeft,
-             color: Colors.black,
-             child:Column(
-           crossAxisAlignment: CrossAxisAlignment.start,
-           children: [
-             SizedBox(height: 20,),
-                   Text("Name - $name", style:TextStyle(color: Colors.white, fontSize: 15)),
-             Text("Price in USD - \$$price", style:TextStyle(color: Colors.white, fontSize: 15)),
-                 Row(
-           children:[SizedBox(width: 60),
-           RaisedButton(
-         color: Colors.green,
-         textColor: Colors.white70,
-         elevation: 10,
-         child: Text("Subscribe"),
-         onPressed: (){
-           print("$name Subscribed!!");
-           if(_subscribedList.contains(cryptoData.name))
-             alreadySubscribed(context);
-           else {
-             _subscribedList.add(cryptoData);
-             subscribed(context, name);
-           }
-           print(_subscribedList);
-         },
-       ),
-           SizedBox(width: 70),
-           RaisedButton(
-             color: Colors.red,
-             textColor: Colors.white70,
-             elevation: 10,
-             child: Text("Unsubscribe"),
-             onPressed: (){
-               print("$name Unsubscribed!!");
-             },
-           )]),
-   ]))));
+    return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.black87,
+          title: Text(name, style: TextStyle(color: Colors.white)),
+        ),
+        body: Center(
+            child: Container(
+                alignment: Alignment.topLeft,
+                color: Colors.black,
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: 20,
+                      ),
+                      CircleAvatar(
+                        backgroundImage:
+                            imageUri.isNotEmpty ? NetworkImage(imageUri) : null,
+                        radius: 120,
+                        backgroundColor: Colors.black,
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Text("Name -   $name",
+                          style: TextStyle(color: Colors.white, fontSize: 20)),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text("Price in USD -   \$$price",
+                          style: TextStyle(color: Colors.white, fontSize: 20)),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text("Available Supply -   $supply",
+                          style: TextStyle(color: Colors.white, fontSize: 20)),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text("Max. Supply Issued -   $maxSupply",
+                          style: TextStyle(color: Colors.white, fontSize: 20)),
+                      SizedBox(height: 50),
+                      Row(children: [
+                        SizedBox(width: 60),
+                        RaisedButton(
+                          color: Colors.green,
+                          textColor: Colors.white70,
+                          elevation: 10,
+                          child: Text("Subscribe",
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 15)),
+                          onPressed: () async {
+                            Fluttertoast.showToast(
+                                msg: "$name Subscribed!!",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 3,
+                                backgroundColor: Colors.amber,
+                                textColor: Colors.black,
+                                fontSize: 25);
+                            var uid =
+                                (await FirebaseAuth.instance.currentUser()).uid;
+                            DatabaseManager().addCurrencies(
+                                name, price, cryptoData.rank, uid);
+                          },
+                        ),
+                        SizedBox(width: 70),
+                        RaisedButton(
+                          color: Colors.red,
+                          textColor: Colors.white70,
+                          elevation: 10,
+                          child: Text("Unsubscribe",
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 15)),
+                          onPressed: () async {
+                            Fluttertoast.showToast(
+                                msg: "$name Unsubscribed!!",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 3,
+                                backgroundColor: Colors.amber,
+                                textColor: Colors.black,
+                                fontSize: 25);
+                            var uid =
+                                (await FirebaseAuth.instance.currentUser()).uid;
+                            DatabaseManager()
+                                .deleteCurrencies(cryptoData.rank, uid);
+                            // print(subscribed);,
+                          },
+                        )
+                      ]),
+                    ]))));
   }
 }
 
@@ -75,20 +159,21 @@ void alreadySubscribed(BuildContext context) {
     elevation: 50,
     title: Center(
         child: Text(
-          "Uh Oh! Currency already Subscribed.",
-          style: TextStyle(fontSize: 25),
-        )),
+      "Uh Oh! Currency already Subscribed.",
+      style: TextStyle(fontSize: 25),
+    )),
     actions: [
       FlatButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Market()),
-            );
-          },
-          child: Text("Back",
-              style: TextStyle(color: Colors.blue, fontSize: 20, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Market()),
+          );
+        },
+        child: Text("Back",
+            style: TextStyle(
+                color: Colors.blue, fontSize: 20, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center),
       )
     ],
   );
@@ -104,9 +189,9 @@ void subscribed(BuildContext context, var name) {
     elevation: 50,
     title: Center(
         child: Text(
-          "$name Subscribed!",
-          style: TextStyle(fontSize: 25),
-        )),
+      "$name Subscribed!",
+      style: TextStyle(fontSize: 25),
+    )),
     actions: [
       FlatButton(
           onPressed: () {
@@ -116,7 +201,10 @@ void subscribed(BuildContext context, var name) {
             );
           },
           child: Text("Back",
-              style: TextStyle(color: Colors.blue, fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  color: Colors.blue,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
               textAlign: TextAlign.center))
     ],
   );
