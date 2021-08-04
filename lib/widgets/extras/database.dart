@@ -7,7 +7,7 @@ class DatabaseManager {
 
   Future<void> createUserData(String name, String email, String uid) async {
     return await user
-        .document(uid)
+        .document(uid).collection("userdata").document(name)
         .setData({"name": name, "email": email, "uid": uid}, merge: true);
   }
 
@@ -21,8 +21,7 @@ class DatabaseManager {
   }
 
   Future<void> deleteCurrencies(String rank, String uid) async {
-    return await user
-      ..document(uid).collection("currencies").document(rank).delete();
+    return await user.document(uid).collection("currencies").document(rank).delete();
   }
 
   Future getUserDataList() async {
@@ -65,5 +64,10 @@ class DatabaseManager {
   Stream<QuerySnapshot> getUsersCurrency(BuildContext context) async* {
     final userId = (await FirebaseAuth.instance.currentUser()).uid;
     yield* user.document(userId).collection('currencies').snapshots();
+  }
+
+  Stream<QuerySnapshot> getUserData(BuildContext context) async* {
+    final userId = (await FirebaseAuth.instance.currentUser()).uid;
+    yield* user.document(userId).collection('userdata').snapshots();
   }
 }

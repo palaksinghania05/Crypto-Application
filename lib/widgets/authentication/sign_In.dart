@@ -5,19 +5,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ImageAsset extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return CircleAvatar(
-      radius: 110,
-      backgroundColor: Colors.grey,
-      child: CircleAvatar(
-        backgroundImage: AssetImage('images/cryptologo.png'),
-        radius: 110,
-      ),
+    return Image(
+      image: AssetImage('images/logo.png'),
+      height: 250,
+      width: 250,
     );
   }
 }
@@ -60,20 +56,19 @@ class _SignInState extends State<SignIn> {
                         child: Form(
                             key: _formkey,
                             child: Column(children: <Widget>[
-                              SizedBox(height: 50),
+                              SizedBox(height: 70),
                               ImageAsset(),
-                              SizedBox(height: 15),
                               RichText(
                                   text: TextSpan(
-                                      text: 'MyCrypt',
+                                      text: 'Cryptic',
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 25),
                                       children: <TextSpan>[
                                     TextSpan(
-                                      text: 'Wallet',
+                                      text: 'Winfo',
                                       style: TextStyle(
-                                          color: Colors.blueAccent,
-                                          fontSize: 18),
+                                          color: Colors.lightGreen,
+                                          fontSize: 25),
                                     ),
                                   ])),
                               SizedBox(height: 20.0),
@@ -219,9 +214,17 @@ class _SignInState extends State<SignIn> {
                                   style: TextStyle(
                                       color: Colors.grey,
                                       fontWeight: FontWeight.w400)),
-                              SocialPages(),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text("Sign In with",
+                                  style: TextStyle(
+                                      color: Colors.blueGrey,
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 18)),
+                              _buildSocialBtnRow(),
                               CreateAccount(),
-                              SizedBox(height: 15),
+                              SizedBox(height: 30),
                             ]))))));
   }
 }
@@ -237,35 +240,11 @@ class ForgetPassword extends StatelessWidget {
         //padding: EdgeInsets.only(right: 0.0),
         child: Text(
           'Forgot Password?',
-          style:
-              TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.w400),
+          style: TextStyle(
+              color: Colors.blueAccent,
+              fontWeight: FontWeight.w400,
+              fontSize: 18),
         ),
-      ),
-    );
-  }
-}
-
-class SocialPages extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Padding(
-      padding: EdgeInsets.all(15.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          GoogleSignInButton(
-            onPressed: () => print('Google Sign In Button Pressed'),
-            darkMode: true,
-            text: "Continue with Google",
-            splashColor: Colors.black,
-          ),
-          SizedBox(height: 8),
-          FacebookSignInButton(
-            onPressed: () => print('Facebook Sign In Button Pressed'),
-            splashColor: Colors.black,
-          ),
-        ],
       ),
     );
   }
@@ -308,4 +287,51 @@ class CreateAccount extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget _buildSocialBtn(Function onTap, AssetImage logo) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Container(
+      height: 60.0,
+      width: 60.0,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black26,
+            offset: Offset(0, 2),
+            blurRadius: 6.0,
+          ),
+        ],
+        image: DecorationImage(
+          image: logo,
+        ),
+      ),
+    ),
+  );
+}
+
+Widget _buildSocialBtnRow() {
+  return Padding(
+    padding: EdgeInsets.symmetric(vertical: 10.0),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        _buildSocialBtn(
+          () => print('Login with Facebook'),
+          AssetImage(
+            'images/facebook-logo.png',
+          ),
+        ),
+        _buildSocialBtn(
+          () => print('Login with Google'),
+          AssetImage(
+            'images/google-logo.png',
+          ),
+        ),
+      ],
+    ),
+  );
 }

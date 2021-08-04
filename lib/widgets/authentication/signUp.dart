@@ -9,13 +9,10 @@ class ImageAsset extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return CircleAvatar(
-      radius: 110,
-      backgroundColor: Colors.grey,
-      child: CircleAvatar(
-        backgroundImage: AssetImage('images/cryptologo.png'),
-        radius: 110,
-      ),
+    return Image(
+      image: AssetImage('images/logo.png'),
+      height:250,
+      width: 250,
     );
   }
 }
@@ -105,7 +102,6 @@ class _SignUpState extends State<SignUp> {
                         child: Column(children: <Widget>[
                           SizedBox(height: 50),
                           ImageAsset(),
-                          SizedBox(height: 20),
                           Text(
                             "Create a new account",
                             textDirection: TextDirection.ltr,
@@ -331,10 +327,53 @@ class _SignUpState extends State<SignUp> {
                                         }
                                       })),
                               SizedBox(
-                                height: 20,
-                              )
+                                height: 5,
+                              ),
+                              BackToLogin(),
+                              SizedBox(
+                                height: 15,
+                              ),
                             ],
                           ))
                         ]))))));
+  }
+}
+
+class BackToLogin extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return GestureDetector(
+      onTap: () => {
+        print('Sign In Button Pressed'),
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SignIn(),
+            ))
+      },
+      child: RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: 'Are you an existing User? ',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 20.0,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+            TextSpan(
+              text: 'Log In',
+              style: TextStyle(
+                color: Colors.blueAccent,
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

@@ -1,20 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:crypto_app_basic/models/currency_card.dart';
+import 'package:crypto_app_basic/models/profile_view.dart';
 import 'package:crypto_app_basic/widgets/extras/database.dart';
 import 'package:crypto_app_basic/widgets/extras/explorer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 final usersRef = Firestore.instance.collection("users");
 
-class SubscribedCurrencies extends StatefulWidget {
+class ProfilePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _SubscribedCurrenciesState();
+    return _ProfilePageState();
   }
 }
 
-class _SubscribedCurrenciesState extends State<SubscribedCurrencies> {
+class _ProfilePageState extends State<ProfilePage> {
+  String imageUri = "";
 
   @override
   void initState() {
@@ -23,7 +23,7 @@ class _SubscribedCurrenciesState extends State<SubscribedCurrencies> {
   }
 
   fetchDatabaseList() async {
-    var stream = await DatabaseManager().getUsersCurrency(context);
+    var stream = await DatabaseManager().getUserData(context);
     if (stream == null)
       print("Unable to retrieve!!");
     else {
@@ -36,7 +36,7 @@ class _SubscribedCurrenciesState extends State<SubscribedCurrencies> {
     return Scaffold(
         appBar: AppBar(
             backgroundColor: Colors.black87,
-            title: Text("My Subscribed Currencies"),
+            title: Text("My Profile"),
             automaticallyImplyLeading: false,
             actions: [
               Padding(
@@ -54,18 +54,13 @@ class _SubscribedCurrenciesState extends State<SubscribedCurrencies> {
         body: Container(
             color: Colors.black,
             child: StreamBuilder(
-                stream: DatabaseManager().getUsersCurrency(context),
+                stream: DatabaseManager().getUserData(context),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData)
-                    return Center(child: SpinKitPouringHourglass(
-                      color: Colors.lightGreen,
-                      size: 60,
-                    ));
-                  return ListView.builder(
-                      itemCount: snapshot.data.documents.length,
-                      itemBuilder: (BuildContext context, int index) =>
-                          CurrencyCard().currencyCard(
-                              context, snapshot.data.documents[index]));
-                })));
+                    return Center(child: Text("Loading!!"));
+                  return ProfileView().userProfile(
+                              context, snapshot.data.documents[0]);
+                })
+        ));
   }
 }

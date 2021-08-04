@@ -144,6 +144,7 @@ class _ExchangeState extends State<Exchange> {
                                 fontSize: 25);
                             var uid =
                                 (await FirebaseAuth.instance.currentUser()).uid;
+                            print(uid);
                             DatabaseManager()
                                 .deleteCurrencies(cryptoData.rank, uid);
                             // print(subscribed);,

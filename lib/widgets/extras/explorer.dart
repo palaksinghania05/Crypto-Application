@@ -1,7 +1,9 @@
 import 'package:crypto_app_basic/widgets/screens/FAQ.dart';
+import 'package:crypto_app_basic/widgets/screens/ProfilePage.dart';
 import 'package:crypto_app_basic/widgets/screens/dashboard.dart';
 import 'package:crypto_app_basic/widgets/screens/market.dart';
 import 'package:crypto_app_basic/widgets/authentication/sign_In.dart';
+import 'package:crypto_app_basic/widgets/screens/subscribed.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -21,12 +23,12 @@ class _ExplorerState extends State<Explorer> {
             backgroundColor: Colors.black87,
             title: RichText(
                 text: TextSpan(
-                    text: 'MyCrypt',
+                    text: 'Cryptic',
                     style: TextStyle(color: Colors.white, fontSize: 25),
                     children: <TextSpan>[
                   TextSpan(
-                    text: 'Wallet',
-                    style: TextStyle(color: Colors.blueAccent, fontSize: 18),
+                    text: 'Winfo',
+                    style: TextStyle(color: Colors.lightGreen, fontSize: 25),
                   ),
                 ])),
             actions: [
@@ -43,20 +45,17 @@ class _ExplorerState extends State<Explorer> {
             child: ListView(children: <Widget>[
               Container(
                   child: UserAccountsDrawerHeader(
-                accountName: Text("Username"),
-                accountEmail: Text("username@gmail.com"),
+              decoration: BoxDecoration(
+              color: Colors.lightGreen),
+                accountName: Text("USER3"),
+                accountEmail: Text("test3@gmail.com"),
                 currentAccountPicture: CircleAvatar(
-                    //foregroundColor: Colors.black,
                     backgroundColor: Colors.black38,
                     child: CircleAvatar(
-                      backgroundImage: AssetImage('images/signup.png'),
+                      backgroundColor: Colors.black38,
+                      backgroundImage: AssetImage('images/userlogo.png'),
                       radius: 100,
                     )
-                    /*Text("User\nPicture",
-                        style: TextStyle(
-                          fontSize: 15.0,
-                        ))),
-                decoration: BoxDecoration(color: Colors.blueGrey)),*/
                     ),
               )),
               ListTile(
@@ -84,12 +83,12 @@ class _ExplorerState extends State<Explorer> {
               ListTile(
                 leading: Icon(Icons.attach_money_outlined),
                 title: Text("My Wallets"),
-                /* onTap: () {
+                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Exchange(cryptodata)),
+                    MaterialPageRoute(builder: (context) => SubscribedCurrencies()),
                   );
-                },*/
+                },
                 trailing: Icon(Icons.arrow_forward_ios),
               ),
               ListTile(
@@ -101,6 +100,12 @@ class _ExplorerState extends State<Explorer> {
                 leading: Icon(Icons.account_box),
                 title: Text("My Profile"),
                 trailing: Icon(Icons.arrow_forward_ios),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProfilePage()),
+                  );
+                },
               ),
               ListTile(
                 leading: Icon(Icons.settings),

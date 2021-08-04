@@ -11,14 +11,14 @@ class _BodyState extends State<Body> {
   List<Map<String, String>> splashData = [
     {
       "text":"Welcome to MyCryptWallet, Let's trade!",
-      "image": "images/cryptologo.png"
+      "image": "images/logo.png"
     },
     {
-      "text":"We help people invest in trending crypto-currencies",
+      "text":"We help people invest in \ntrending crypto-currencies",
       "image": "images/investing.jpg"
     },
     {
-      "text":"We show the easy way to gain profit. Just keep investing",
+      "text":"We show the easy way to gain profit. \nJust keep investing",
       "image": "images/profit.png"
     },
   ];
@@ -29,6 +29,7 @@ class _BodyState extends State<Body> {
         width: double.infinity,
         child: Column(
       children: [
+        SizedBox(height: 50,),
         Expanded(
             flex: 3,
             child: PageView.builder(
@@ -134,14 +135,25 @@ class SplashUpper extends StatelessWidget {
     return Column(
       children: [
         Spacer(),
-        Text("MyCryptWallet",
-            style: TextStyle(
-                fontWeight: FontWeight.bold, fontSize: 30, color: Colors.teal)),
+        RichText(
+            text: TextSpan(
+                text: 'Cryptic',
+                style: TextStyle(
+                    color: Colors.white, fontSize: 35),
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Winfo',
+                    style: TextStyle(
+                        color: Colors.lightGreen,
+                        fontSize: 35),
+                  ),
+                ])),
         Text(text, textAlign: TextAlign.center,
             style: TextStyle(
-                fontWeight: FontWeight.bold, fontSize: 15, color: Colors.grey)),
+                fontWeight: FontWeight.bold, fontSize: 20, color: Colors.black)),
         Spacer(flex: 2),
         CircleAvatar(
+          backgroundColor: Colors.blueGrey,
           backgroundImage: AssetImage(image),
           radius: 130,
         ),
