@@ -37,9 +37,7 @@ This project comprises of a crypto-app named CrypticWinfo which aims at making c
 
 #### API Reference
 
-```html
-    <p>https//api.coincap.io/v2/assets</p>
-```
+[Coincap API](https//api.coincap.io/v2/assets)
 
 ---
 
