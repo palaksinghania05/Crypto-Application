@@ -1,4 +1,4 @@
-# Read Me Template
+# CrpticWinfo - A CryptoApplication Project
 
 ![Project Image](./images/CrypticWinfo.png)
 
@@ -37,7 +37,7 @@ This project comprises of a crypto-app named CrypticWinfo which aims at making c
 
 #### API Reference
 
-[Coincap API](https//api.coincap.io/v2/assets)
+- Coincap API
 
 ---
 
