@@ -1,6 +1,6 @@
 # Read Me Template
 
-![Project Image](./assets/CrpticWinfo.png)
+![Project Image](./images/CrypticWinfo.png)
 
 ---
 
@@ -8,7 +8,6 @@
 
 - [Description](#description)
 - [How To Use](#how-to-use)
-- [References](#references)
 - [Author Info](#author-info)
 
 ---
@@ -39,7 +38,7 @@ This project comprises of a crypto-app named CrypticWinfo which aims at making c
 #### API Reference
 
 ```html
-    <p>[Coincap API](https//api.coincap.io/v2/assets)</p>
+    <p>https//api.coincap.io/v2/assets</p>
 ```
 
 ---
