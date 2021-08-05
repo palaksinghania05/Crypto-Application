@@ -1,16 +1,52 @@
-# crypto_app_basic
+# Read Me Template
 
-A basic crypto app UI
+![Project Image](./assets/CrpticWinfo.png)
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+### Table of Contents
 
-A few resources to get you started if this is your first Flutter project:
+- [Description](#description)
+- [How To Use](#how-to-use)
+- [References](#references)
+- [Author Info](#author-info)
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+---
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Description
+
+This project comprises of a crypto-app named CrypticWinfo which aims at making crypto-trading easier for the users. It provides regular updates of over 100 cryptocurrencies as well as let users subscribe or unsubscribe the cryptocurrencies as per their liking. 
+
+#### Technologies
+
+- Flutter
+- Dart Programming
+- Firebase and Firestore
+
+---
+
+## How To Use
+
+#### Installation
+
+- Fork this repository.
+- Open the project in Android Studio or VSCode.
+- Install Flutter and dart plugins.
+- Open pubsec.yaml file and run "flutter pub get" in the terminal.
+- Install and emulator or connect your device to the editor.
+- Run main.dart file.
+
+#### API Reference
+
+```html
+    <p>[Coincap API](https//api.coincap.io/v2/assets)</p>
+```
+
+---
+
+## Developer Info
+
+- LinkedIn - [Palak Singhania](https://www.linkedin.com/in/palak-s-837b1519b/)
+
+---
+[Back To The Top](#read-me-template)
