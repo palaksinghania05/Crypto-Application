@@ -1,4 +1,4 @@
-# CrpticWinfo - A CryptoApplication Project
+# CrypticWinfo - A CryptoApplication Project
 
 ![Project Image](./images/CrypticWinfo.png)
 
